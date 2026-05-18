@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>For Valeria &#10084;&#65039;</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: "Poppins", "Segoe UI", sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      overflow: hidden;
+      background: linear-gradient(135deg, #ff9ecf, #ffd6ec);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      padding: 20px;
+    }
+
+    .container {
+      width: min(640px, 100%);
+      text-align: center;
+      background: rgba(255, 255, 255, 0.16);
+      backdrop-filter: blur(12px);
+      padding: 50px 28px;
+      border-radius: 30px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+      position: relative;
+      z-index: 2;
+    }
+
+    h1 {
+      color: white;
+      font-size: clamp(2.2rem, 6vw, 3rem);
+      margin-bottom: 16px;
+      text-shadow: 0 4px 10px rgba(0, 0, 0, 0.18);
+    }
+
+    p {
+      color: white;
+      font-size: clamp(1.1rem, 3.8vw, 1.3rem);
+      margin-bottom: 34px;
+    }
+
+    .buttons {
+      position: relative;
+      height: 170px;
+      width: 100%;
+    }
+
+    button {
+      border: none;
+      padding: 16px 35px;
+      border-radius: 999px;
+      font-size: 1.2rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease, left 0.16s ease, top 0.16s ease;
+      position: absolute;
+      top: 34px;
+      white-space: nowrap;
+    }
+
+    #yesBtn {
+      background: #ff4f93;
+      color: white;
+      left: 28%;
+      transform: translateX(-50%);
+      box-shadow: 0 5px 15px rgba(255, 79, 147, 0.4);
+    }
+
+    #yesBtn:hover {
+      transform: translateX(-50%) scale(1.08);
+    }
+
+    #noBtn {
+      background: white;
+      color: #ff4f93;
+      left: 68%;
+      transform: translateX(-50%);
+      box-shadow: 0 5px 15px rgba(255, 255, 255, 0.3);
+    }
+
+    .celebration {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 18px;
+      animation: pop 0.7s ease;
+    }
+
+    .celebration video {
+      width: min(340px, 100%);
+      border-radius: 24px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.28);
+      background: rgba(255, 255, 255, 0.4);
+    }
+
+    .celebration p {
+      margin-bottom: 0;
+    }
+
+    .heart {
+      position: absolute;
+      color: rgba(255, 255, 255, 0.85);
+      animation: float 6s linear forwards;
+      font-size: 22px;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    @keyframes pop {
+      from {
+        transform: scale(0.8);
+        opacity: 0;
+      }
+
+      to {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+
+    @keyframes float {
+      from {
+        transform: translateY(25vh) scale(0.5);
+        opacity: 0;
+      }
+
+      15% {
+        opacity: 1;
+      }
+
+      to {
+        transform: translateY(-110vh) scale(1.4);
+        opacity: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container" id="mainBox">
+    <h1>Hey Valeria &#10084;&#65039;</h1>
+    <p>Would you like to go out with me? &#129402;</p>
+
+    <div class="buttons" id="buttonsBox">
+      <button id="yesBtn">Yes &#128150;</button>
+      <button id="noBtn">No &#128584;</button>
+    </div>
+  </div>
+
+  <script>
+    const mainBox = document.getElementById("mainBox");
+    const buttonsBox = document.getElementById("buttonsBox");
+    const yesBtn = document.getElementById("yesBtn");
+    const noBtn = document.getElementById("noBtn");
+
+    function createHearts(total = 22) {
+      for (let i = 0; i < total; i += 1) {
+        const heart = document.createElement("div");
+        heart.className = "heart";
+        heart.innerHTML = "&#10084;";
+        heart.style.left = `${Math.random() * 100}vw`;
+        heart.style.animationDelay = `${Math.random() * 1.5}s`;
+        heart.style.fontSize = `${18 + Math.random() * 22}px`;
+        document.body.appendChild(heart);
+
+        setTimeout(() => {
+          heart.remove();
+        }, 6000);
+      }
+    }
+
+    function moveNoButton() {
+      const boxWidth = buttonsBox.clientWidth;
+      const boxHeight = buttonsBox.clientHeight;
+      const buttonWidth = noBtn.offsetWidth;
+      const buttonHeight = noBtn.offsetHeight;
+      const padding = 8;
+
+      const maxLeft = Math.max(padding, boxWidth - buttonWidth - padding);
+      const maxTop = Math.max(padding, boxHeight - buttonHeight - padding);
+
+      const randomLeft = padding + Math.random() * Math.max(0, maxLeft - padding);
+      const randomTop = padding + Math.random() * Math.max(0, maxTop - padding);
+
+      noBtn.style.left = `${randomLeft}px`;
+      noBtn.style.top = `${randomTop}px`;
+      noBtn.style.transform = "none";
+    }
+
+    function keepNoButtonInsideBox() {
+      if (noBtn.style.transform === "none") {
+        const currentLeft = parseFloat(noBtn.style.left) || 0;
+        const currentTop = parseFloat(noBtn.style.top) || 0;
+        const maxLeft = Math.max(8, buttonsBox.clientWidth - noBtn.offsetWidth - 8);
+        const maxTop = Math.max(8, buttonsBox.clientHeight - noBtn.offsetHeight - 8);
+
+        noBtn.style.left = `${Math.min(currentLeft, maxLeft)}px`;
+        noBtn.style.top = `${Math.min(currentTop, maxTop)}px`;
+      }
+    }
+
+    yesBtn.addEventListener("click", () => {
+      mainBox.innerHTML = `
+        <div class="celebration">
+          <video
+            id="loveVideo"
+            src="love.mp4"
+            poster="Love.jpg"
+            autoplay
+            muted
+            loop
+            playsinline
+            controls
+          ></video>
+          <h1>I CAN'T BELIEVE IT &#128557;&#128150;</h1>
+          <p>You just made me the happiest person alive &#129401;&#10084;&#65039;</p>
+        </div>
+      `;
+
+      const loveVideo = document.getElementById("loveVideo");
+      const playPromise = loveVideo.play();
+
+      if (playPromise && typeof playPromise.catch === "function") {
+        playPromise.catch(() => {
+          loveVideo.controls = true;
+        });
+      }
+
+      createHearts();
+    });
+
+    ["mouseenter", "pointerdown", "focus"].forEach((eventName) => {
+      noBtn.addEventListener(eventName, moveNoButton);
+    });
+
+    noBtn.addEventListener(
+      "touchstart",
+      (event) => {
+        event.preventDefault();
+        moveNoButton();
+      },
+      { passive: false }
+    );
+
+    noBtn.addEventListener("click", (event) => {
+      event.preventDefault();
+      moveNoButton();
+    });
+
+    window.addEventListener("resize", keepNoButtonInsideBox);
+  </script>
+</body>
+</html>
